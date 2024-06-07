@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="submit"], input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover, input[type="button"]:hover {
+            background-color: #45a049;
+        }
+        .order-summary {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pet Care Clinic</h1>
+        <nav>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="order.html">Pesan Antrian</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <form id="orderForm">
+            <h2>Order Form</h2>
+            <label for="hospital">Hospital:</label>
+            <select id="hospital" name="hospital">
+                <option value="Hospital Yang Anda Pilih Salah">Pilih Rumah Sakit Hewan Anda .....</option>
+                <option value="Cherry Pet Shop Haryono">Cherry Pet Shop Haryono</option>
+                <option value="ANTARES Satwa Care">ANTARES Satwa Care</option>
+                <option value="MONTANA Klinik Hewan">MONTANA Klinik Hewan</option>
+                <option value="Annisa Pet Care">Annisa Pet Care</option>
+                <option value="ANIMAL CENTER INDONESIA">ANIMAL CENTER INDONESIA</option>
+                <option value="Klinik Hewan Kasih Satwa">Klinik Hewan Kasih Satwa</option>
+            </select>
+
+            <label for="productName">Nama / Jenis Hewan Anda:</label>
+            <input type="text" id="productName" name="productName" required>
+
+            <label for="quantity">Jumlah Hewan:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+
+            <label for="customerName">Nama Owner:</label>
+            <input type="text" id="customerName" name="customerName" required>
+
+            <label for="email">Email Owner:</label>
+            <input type="text" id="email" name="email" required>
+
+            <label for="phone">Number Phone Owner:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <input type="submit" value="Submit Order">
+        </form>
+
+        <div class="order-summary" id="orderSummary" style="display: none;">
+            <h2>Order Summary</h2>
+            <p><strong>Order Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+            </strong> <span id="orderNumber"></span></p>
+            <p><strong>Hospital&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+            </strong> <span id="summaryHospital"></span></p>
+            <p><strong>Nama / Jenis Hewan Anda&nbsp; :</strong> <span id="summaryProductName"></span></p>
+            <p><strong>Jumlah Hewan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+            </strong> <span id="summaryQuantity"></span></p>
+            <p><strong>Nama Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+            </strong> <span id="summaryCustomerName"></span></p>
+            <p><strong>Email Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+            </strong> <span id="summaryEmail"></span></p>
+            <p><strong>Number Phone Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+            </strong> <span id="summaryPhone"></span></p>
+            <input type="button" value="Print Order Summary" onclick="printOrderSummary()">
+        </div>
+    </div>
+
+    <script>
+        var orderCount = 0;
+
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            showOrderSummary();
+        });
+
+        function showOrderSummary() {
+            var hospital = document.getElementById('hospital').value;
+            var productName = document.getElementById('productName').value;
+            var quantity = document.getElementById('quantity').value;
+            var customerName = document.getElementById('customerName').value;
+            var email = document.getElementById('email').value;
+            var phone = document.getElementById('phone').value;
+
+            orderCount++;
+            var orderNumber = 'A00' + orderCount;
+
+            document.getElementById('orderNumber').innerText = orderNumber;
+            document.getElementById('summaryHospital').innerText = hospital;
+            document.getElementById('summaryProductName').innerText = productName;
+            document.getElementById('summaryQuantity').innerText = quantity;
+            document.getElementById('summaryCustomerName').innerText = customerName;
+            document.getElementById('summaryEmail').innerText = email;
+            document.getElementById('summaryPhone').innerText = phone;
+
+            document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('orderSummary').style.display = 'block';
+        }
+
+        function printOrderSummary() {
+            var printContents = document.getElementById('orderSummary').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+</body>
+<footer>
+    &copy; Tugas Besar &copy;
+</footer>
+</html>
